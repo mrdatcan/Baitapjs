@@ -6,45 +6,67 @@ var translateY = 0
 var count = commentItem.length
 console.log(count) 
 
-next.addEventListener('click', function(event) {
-    event.preventDefault()
-    if(count==1)
-    {
-        // XEM HẾT BÌNH LUẬN
-        return false
-    }
-    translateY += -400
-comment.style.tranform = 'tranlateY(${translateY}px)'
-    count--
-})
 
-prev.addEventListener('click',function (event)
+fetch('data/products.json')
+  .then(response => response.json())
+  .then(data => {
+    const productList = document.getElementById('product-list');
 
-{
-    event.preventDefault()
-    if(count ==3){
-        //xem hết bl
-        return false
-    }
-    translateY += 400
-comment.style.tranform = 'tranlateY(${translateY}px)'
-    count++
-})
-function openModal(title, imageSrc, description) {
-  document.getElementById('modalTitle').textContent = title;
-  document.getElementById('modalImage').src = imageSrc;
-  document.getElementById('modalDescription').textContent = description;
-  document.getElementById('productModal').style.display = 'block';
-}
+    data.forEach(product => {
+      const productItem = document.createElement('div');
+      productItem.classList.add('product');
 
-function closeModal() {
-  document.getElementById('productModal').style.display = 'none';
-}
+      productItem.innerHTML = `
+        <img src="${product.image}" alt="${product.name}">
+        <h3>${product.name}</h3>
+        <p>${product.price.toLocaleString()} VND</p>
+      `;
 
-// Optional: Bấm ngoài modal để đóng
-window.onclick = function(event) {
-  const modal = document.getElementById('productModal');
-  if (event.target == modal) {
-    closeModal();
-  }
-}
+      productList.appendChild(productItem);
+    });
+  })
+  .catch(error => console.error('Lỗi khi đọc JSON:', error));
+
+
+// next.addEventListener('click', function(event) {
+//     event.preventDefault()
+//     if(count==1)
+//     {
+//         // XEM HẾT BÌNH LUẬN
+//         return false
+//     }
+//     translateY += -400
+// comment.style.tranform = 'tranlateY(${translateY}px)'
+//     count--
+// })
+
+// prev.addEventListener('click',function (event)
+
+// {
+//     event.preventDefault()
+//     if(count ==3){
+//         //xem hết bl
+//         return false
+//     }
+//     translateY += 400
+// comment.style.tranform = 'tranlateY(${translateY}px)'
+//     count++
+// })
+// function openModal(title, imageSrc, description) {
+//   document.getElementById('modalTitle').textContent = title;
+//   document.getElementById('modalImage').src = imageSrc;
+//   document.getElementById('modalDescription').textContent = description;
+//   document.getElementById('productModal').style.display = 'block';
+// }
+
+// function closeModal() {
+//   document.getElementById('productModal').style.display = 'none';
+// }
+
+// // Optional: Bấm ngoài modal để đóng
+// window.onclick = function(event) {
+//   const modal = document.getElementById('productModal');
+//   if (event.target == modal) {
+//     closeModal();
+//   }
+// }
